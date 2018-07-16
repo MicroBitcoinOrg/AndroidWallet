@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+android {
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId 'com.microbitcoin.wallet'
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "0.8.0"
+        multiDexEnabled true
+        setProperty("archivesBaseName", "MBC-$versionName" + "-")
+    }
+    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+    }
+    sourceSets {
+        androidTest {
+            setRoot('src/test')
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'aars'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'], dir: '../core/libs')
+    compile project(':core')
+    compile 'com.android.support:support-v4:27.1.1'
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:preference-v7:27.1.1'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.guava:guava:20.0'
+    compile 'com.google.code.findbugs:jsr305:1.3.9'
+    compile 'com.google.protobuf:protobuf-java:2.5.0'
+    compile 'com.google.zxing:core:3.1.0'
+    compile 'com.madgag.spongycastle:core:1.51.0.0'
+    compile 'ch.acra:acra:4.5.0'
+}
+
+// Testing
+//    androidTestCompile 'junit:junit:4.11'
+//    androidTestCompile 'org.robolectric:robolectric:2.3'
+//    androidTestCompile 'com.squareup:fest-android:1.0.+'
+//    compile 'com.github.castorflex.smoothprogressbar:library:1.1.0'
+
+//sourceSets {
+//    unitTest {
+//        java.srcDir file('src/test/java')
+//        resources.srcDir file('src/test/resources')
+//    }
+//}
+//apply plugin: 'robolectric'
+
+//robolectric {
+//    include '**/*Test.class'
+//    exclude '**/espresso/**/*.class'
+//}
+
+//apply plugin: 'idea'
+
+//idea {
+//    module {
+//        testOutputDir = file('build/test-classes/debug')
+//    }
+//}
