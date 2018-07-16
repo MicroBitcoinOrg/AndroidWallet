@@ -445,7 +445,7 @@ public class ServerClient implements BlockchainConnection {
             public void onSuccess(ResultMessage result) {
                 try {
                     String rawTx = result.getResult().getString(0);
-                    TransactionMBC tx = new TransactionMBC(type, Utils.HEX.decode(rawTx));
+                    Transaction tx = new Transaction(type, Utils.HEX.decode(rawTx));
                     if (!tx.getHash().equals(txHash)) {
                         throw new Exception("Requested TX " + txHash + " but got " + tx.getHashAsString());
                     }
@@ -468,7 +468,7 @@ public class ServerClient implements BlockchainConnection {
     }
 
     @Override
-    public void broadcastTx(final TransactionMBC tx, @Nullable final TransactionEventListener listener) {
+    public void broadcastTx(final Transaction tx, @Nullable final TransactionEventListener listener) {
         checkNotNull(stratumClient);
 
         CallMessage message = new CallMessage("blockchain.transaction.broadcast",
@@ -501,7 +501,7 @@ public class ServerClient implements BlockchainConnection {
     }
 
     @Override
-    public boolean broadcastTxSync(final TransactionMBC tx) {
+    public boolean broadcastTxSync(final Transaction tx) {
         checkNotNull(stratumClient);
 
         CallMessage message = new CallMessage("blockchain.transaction.broadcast",

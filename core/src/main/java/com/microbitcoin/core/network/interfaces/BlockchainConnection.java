@@ -1,7 +1,6 @@
 package com.microbitcoin.core.network.interfaces;
 
 import com.microbitcoin.core.network.AddressStatus;
-import com.microbitcoin.core.network.TransactionMBC;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Sha256Hash;
