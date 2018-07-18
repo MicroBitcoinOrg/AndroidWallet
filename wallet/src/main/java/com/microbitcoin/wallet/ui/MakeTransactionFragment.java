@@ -15,6 +15,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +48,11 @@ import com.microbitcoin.wallet.ui.widget.TransactionAmountVisualizer;
 import com.microbitcoin.wallet.util.Keyboard;
 import com.microbitcoin.wallet.util.WeakHandler;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.crypto.KeyCrypterException;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.InsufficientMoneyException;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.crypto.KeyCrypterException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +71,6 @@ import static com.microbitcoin.wallet.ExchangeRatesProvider.getRates;
 
 /**
  * This fragment displays a busy message and makes the transaction in the background
- *
  */
 public class MakeTransactionFragment extends Fragment {
     private static final Logger log = LoggerFactory.getLogger(MakeTransactionFragment.class);
@@ -93,7 +94,8 @@ public class MakeTransactionFragment extends Fragment {
     private static final String WITHDRAW_AMOUNT = "withdraw_amount";
 
     private Handler handler = new MyHandler(this);
-    @Nullable private String password;
+    @Nullable
+    private String password;
     private Listener mListener;
     private ContentResolver contentResolver;
     private SignAndBroadcastTask signAndBroadcastTask;
@@ -106,20 +108,28 @@ public class MakeTransactionFragment extends Fragment {
     private SendOutput tradeWithdrawSendOutput;
     private Address sendToAddress;
     private boolean sendingToAccount;
-    @Nullable private Value sendAmount;
+    @Nullable
+    private Value sendAmount;
     private boolean emptyWallet;
     private CoinType sourceType;
     private SendRequest request;
     private LoaderManager loaderManager;
     private WalletPocketHD sourceAccount;
-    @Nullable private ExchangeEntry exchangeEntry;
-    @Nullable private Address tradeDepositAddress;
-    @Nullable private Value tradeDepositAmount;
-    @Nullable private Address tradeWithdrawAddress;
-    @Nullable private Value tradeWithdrawAmount;
-    @Nullable private TxMessage txMessage;
+    @Nullable
+    private ExchangeEntry exchangeEntry;
+    @Nullable
+    private Address tradeDepositAddress;
+    @Nullable
+    private Value tradeDepositAmount;
+    @Nullable
+    private Address tradeWithdrawAddress;
+    @Nullable
+    private Value tradeWithdrawAmount;
+    @Nullable
+    private TxMessage txMessage;
     private boolean transactionBroadcast = false;
-    @Nullable private Exception error;
+    @Nullable
+    private Exception error;
     private HashMap<String, ExchangeRate> localRates = new HashMap<>();
 
     private CountDownTimer countDownTimer;
@@ -129,6 +139,7 @@ public class MakeTransactionFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public MakeTransactionFragment() {
         // Required empty public constructor
     }
@@ -152,6 +163,7 @@ public class MakeTransactionFragment extends Fragment {
                 throw new IllegalArgumentException(
                         "Cannot set 'empty wallet' and 'send amount' at the same time");
             }
+
             if (args.containsKey(ARG_SEND_TO_ACCOUNT_ID)) {
                 String toAccountId = args.getString(ARG_SEND_TO_ACCOUNT_ID);
                 WalletPocketHD toAccount = (WalletPocketHD) checkNotNull(application.getAccount(toAccountId));
@@ -174,8 +186,11 @@ public class MakeTransactionFragment extends Fragment {
                 tradeWithdrawAmount = (Value) savedState.getSerializable(WITHDRAW_AMOUNT);
             }
 
+            log.info("Test onCreate " + sendAmount + " / " + sendToAddress + " / " + txMessage);
+
             maybeStartCreateTransaction();
         } catch (Exception e) {
+            e.printStackTrace();
             error = e;
             if (mListener != null) {
                 mListener.onSignResult(e, null);
@@ -284,6 +299,7 @@ public class MakeTransactionFragment extends Fragment {
                                             boolean emptyWallet, @Nullable Value amount,
                                             @Nullable TxMessage txMessage)
             throws InsufficientMoneyException {
+        log.info("TEST generateSendRequest " + sendTo + " / " + emptyWallet + " / " + amount + " / " + txMessage);
 
         SendRequest sendRequest;
         if (emptyWallet) {
@@ -294,6 +310,8 @@ public class MakeTransactionFragment extends Fragment {
         sendRequest.txMessage = txMessage;
         sendRequest.signInputs = false;
         sourceAccount.completeTx(sendRequest);
+
+        log.info("TEST generateSendRequest " + sendRequest.tx);
 
         return sendRequest;
     }
@@ -423,7 +441,7 @@ public class MakeTransactionFragment extends Fragment {
 
     /**
      * Makes a call to ShapeShift about the time left for the trade
-     *
+     * <p>
      * Note: do not call this from the main thread!
      */
     @Nullable
@@ -435,7 +453,7 @@ public class MakeTransactionFragment extends Fragment {
                 return shapeShift.getTime(address);
             } catch (Exception e) {
                 log.info("Will retry: {}", e.getMessage());
-                    /* ignore and retry, with linear backoff */
+                /* ignore and retry, with linear backoff */
                 try {
                     Thread.sleep(1000 * tries);
                 } catch (InterruptedException ie) { /*ignored*/ }
@@ -500,7 +518,9 @@ public class MakeTransactionFragment extends Fragment {
      * The fragment handler
      */
     private static class MyHandler extends WeakHandler<MakeTransactionFragment> {
-        public MyHandler(MakeTransactionFragment referencingObject) { super(referencingObject); }
+        public MyHandler(MakeTransactionFragment referencingObject) {
+            super(referencingObject);
+        }
 
         @Override
         protected void weakHandleMessage(MakeTransactionFragment ref, Message msg) {
@@ -567,16 +587,18 @@ public class MakeTransactionFragment extends Fragment {
                         // The amountSending could be equal to sendAmount or the actual amount if
                         // emptying the wallet
                         Value amountSending = Value.valueOf(sourceType, request.tx
-                                .getValue(sourceAccount).negate() .subtract(request.tx.getFee()));
+                                .getValue(sourceAccount).negate().subtract(request.tx.getFee()));
                         tradeWithdrawAmount = marketInfo.rate.convert(amountSending);
                     } else {
                         // If no values set, make the call
                         if (tradeDepositAddress == null || tradeDepositAmount == null ||
                                 tradeWithdrawAddress == null || tradeWithdrawAmount == null) {
+
                             ShapeShiftAmountTx fixedAmountTx =
                                     shapeShift.exchangeForAmount(sendAmount, sendToAddress, refundAddress);
                             // TODO, show a retry message
-                            if (fixedAmountTx.isError) throw new Exception(fixedAmountTx.errorMessage);
+                            if (fixedAmountTx.isError)
+                                throw new Exception(fixedAmountTx.errorMessage);
                             tradeDepositAddress = fixedAmountTx.deposit;
                             tradeDepositAmount = fixedAmountTx.depositAmount;
                             tradeWithdrawAddress = fixedAmountTx.withdrawal;
@@ -653,8 +675,9 @@ public class MakeTransactionFragment extends Fragment {
                     contentResolver.insert(uri, exchangeEntry.getContentValues());
                 }
                 handler.sendEmptyMessage(STOP_TRADE_TIMEOUT);
+            } catch (Exception e) {
+                error = e;
             }
-            catch (Exception e) { error = e; }
 
             return error;
         }

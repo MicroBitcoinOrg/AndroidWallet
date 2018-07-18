@@ -6,11 +6,11 @@ import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.coins.ValueType;
 import com.google.common.collect.ImmutableList;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.Monetary;
+import com.microbitcoin.mbcj.core.VersionedChecksummedBytes;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Monetary;
-import org.bitcoinj.core.VersionedChecksummedBytes;
 
 import java.util.List;
 import java.util.Locale;

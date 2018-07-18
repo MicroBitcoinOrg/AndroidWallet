@@ -1,10 +1,9 @@
 package com.microbitcoin.core.network.interfaces;
 
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Sha256Hash;
+import com.microbitcoin.mbcj.core.Transaction;
 import com.microbitcoin.core.network.AddressStatus;
-
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
 
 import java.util.List;
 

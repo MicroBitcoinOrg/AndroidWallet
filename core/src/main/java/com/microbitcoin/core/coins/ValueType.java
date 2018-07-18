@@ -1,8 +1,8 @@
 package com.microbitcoin.core.coins;
 
-import com.microbitcoin.core.util.MonetaryFormat;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.utils.MonetaryFormat;
 
-import org.bitcoinj.core.Coin;
 
 import java.io.Serializable;
 

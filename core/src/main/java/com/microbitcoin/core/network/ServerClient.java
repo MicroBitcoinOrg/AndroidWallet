@@ -1,9 +1,17 @@
 package com.microbitcoin.core.network;
 
 import com.microbitcoin.core.coins.CoinType;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.Sha256Hash;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionOutPoint;
+import com.microbitcoin.mbcj.core.Utils;
 import com.microbitcoin.core.network.interfaces.BlockchainConnection;
 import com.microbitcoin.core.network.interfaces.ConnectionEventListener;
 import com.microbitcoin.core.network.interfaces.TransactionEventListener;
+import com.microbitcoin.mbcj.utils.ListenerRegistration;
+import com.microbitcoin.mbcj.utils.Threading;
 import com.microbitcoin.stratumj.ServerAddress;
 import com.microbitcoin.stratumj.StratumClient;
 import com.microbitcoin.stratumj.messages.CallMessage;
@@ -14,23 +22,12 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.Service;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionOutPoint;
-import org.bitcoinj.core.Utils;
-import org.bitcoinj.script.Script;
-import org.bitcoinj.utils.ListenerRegistration;
-import org.bitcoinj.utils.Threading;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -43,13 +40,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
-import static com.microbitcoin.core.Preconditions.checkNotNull;
-import static com.microbitcoin.core.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.util.concurrent.Service.State.NEW;
 
 /**
  * @author John L. Jegutanis
  */
+@SuppressWarnings("all")
 public class ServerClient implements BlockchainConnection {
     private static final Logger log = LoggerFactory.getLogger(ServerClient.class);
 
@@ -75,7 +73,7 @@ public class ServerClient implements BlockchainConnection {
     private boolean stopped = false;
 
     // TODO, only one is supported at the moment. Change when accounts are supported.
-    private transient CopyOnWriteArrayList<ListenerRegistration<ConnectionEventListener>> eventListeners;
+    private   CopyOnWriteArrayList<ListenerRegistration<ConnectionEventListener>> eventListeners;
 
     private Runnable reconnectTask = new Runnable() {
         public boolean isPolling = false;

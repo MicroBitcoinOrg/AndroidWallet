@@ -1,21 +1,27 @@
 package com.microbitcoin.core.coins;
 
 
-import com.microbitcoin.core.messages.MessageFactory;
-import com.microbitcoin.core.util.MonetaryFormat;
 import com.google.common.base.Charsets;
-
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.crypto.ChildNumber;
-import org.bitcoinj.crypto.HDUtils;
+import com.microbitcoin.core.coins.families.CoinFamily;
+import com.microbitcoin.core.messages.MessageFactory;
+import com.microbitcoin.mbcj.core.AbstractBlockChain;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.BitcoinSerializer;
+import com.microbitcoin.mbcj.core.Block;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.NetworkParameters;
+import com.microbitcoin.mbcj.core.StoredBlock;
+import com.microbitcoin.mbcj.core.VerificationException;
+import com.microbitcoin.mbcj.crypto.ChildNumber;
+import com.microbitcoin.mbcj.crypto.HDUtils;
+import com.microbitcoin.mbcj.store.BlockStore;
+import com.microbitcoin.mbcj.store.BlockStoreException;
+import com.microbitcoin.mbcj.utils.MonetaryFormat;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
-
 
 import javax.annotation.Nullable;
 
@@ -41,9 +47,9 @@ abstract public class CoinType extends NetworkParameters implements ValueType, S
     protected FeePolicy feePolicy = FeePolicy.FEE_PER_KB;
     protected byte[] signedMessageHeader;
 
-    private transient MonetaryFormat friendlyFormat;
-    private transient MonetaryFormat plainFormat;
-    private transient Value oneCoin;
+    private  MonetaryFormat friendlyFormat;
+    private  MonetaryFormat plainFormat;
+    private  Value oneCoin;
 
     @Override
     public String getName() {
@@ -220,5 +226,44 @@ abstract public class CoinType extends NetworkParameters implements ValueType, S
     @Override
     public boolean equals(ValueType obj) {
         return super.equals(obj);
+    }
+
+    /*
+
+     */
+    protected int tokenId = 0x53;
+
+    protected CoinFamily family;
+
+    protected int transactionVersion;
+
+    @Override
+    public void checkDifficultyTransitions(StoredBlock storedPrev, Block next, BlockStore blockStore, AbstractBlockChain blockChain) throws VerificationException, BlockStoreException {
+
+    }
+
+    @Override
+    public Coin getMaxMoney() {
+        return null;
+    }
+
+    @Override
+    public Coin getMinNonDustOutput() {
+        return null;
+    }
+
+    @Override
+    public boolean hasMaxMoney() {
+        return false;
+    }
+
+    @Override
+    public BitcoinSerializer getSerializer(boolean parseRetain) {
+        return new BitcoinSerializer(this, parseRetain);
+    }
+
+    @Override
+    public int getProtocolVersionNum(ProtocolVersion version) {
+        return version.getBitcoinProtocolVersion();
     }
 }

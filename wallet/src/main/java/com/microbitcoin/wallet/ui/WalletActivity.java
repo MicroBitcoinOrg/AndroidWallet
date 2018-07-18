@@ -25,6 +25,7 @@ import com.microbitcoin.core.uri.CoinURI;
 import com.microbitcoin.core.uri.CoinURIParseException;
 import com.microbitcoin.core.util.GenericUtils;
 import com.microbitcoin.core.wallet.WalletAccount;
+import com.microbitcoin.mbcj.core.Context;
 import com.microbitcoin.wallet.BuildConfig;
 import com.microbitcoin.wallet.Constants;
 import com.microbitcoin.wallet.R;
@@ -34,9 +35,10 @@ import com.microbitcoin.wallet.util.Keyboard;
 import com.microbitcoin.wallet.util.UiUtils;
 import com.microbitcoin.wallet.util.WeakHandler;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Transaction;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.Transaction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

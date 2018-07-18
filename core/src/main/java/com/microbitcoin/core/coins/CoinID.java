@@ -2,10 +2,10 @@ package com.microbitcoin.core.coins;
 
 import com.microbitcoin.core.util.GenericUtils;
 import com.google.common.collect.ImmutableList;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.NetworkParameters;
+import com.microbitcoin.mbcj.params.Networks;
 
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.params.Networks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +34,7 @@ public enum CoinID {
     private static HashMap<String, ArrayList<CoinType>> uriLookup = new HashMap<>();
 
     static {
-        Set<NetworkParameters> bitcoinjNetworks = Networks.get();
-        for (NetworkParameters network : bitcoinjNetworks) {
+        for (NetworkParameters network : Networks.get()) {
             Networks.unregister(network);
         }
 

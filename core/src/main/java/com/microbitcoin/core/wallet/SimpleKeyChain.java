@@ -1,12 +1,12 @@
 package com.microbitcoin.core.wallet;
 
 import com.microbitcoin.core.protos.Protos;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.crypto.EncryptableItem;
-import org.bitcoinj.crypto.EncryptedData;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.wallet.BasicKeyChain;
 import com.google.protobuf.ByteString;
+import com.microbitcoin.mbcj.core.ECKey;
+import com.microbitcoin.mbcj.crypto.EncryptableItem;
+import com.microbitcoin.mbcj.crypto.EncryptedData;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.wallet.BasicKeyChain;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,7 +35,8 @@ public class SimpleKeyChain extends BasicKeyChain {
         return result;
     }
 
-    /*package*/ static Protos.Key.Builder serializeEncryptableItem(EncryptableItem item) {
+    /*package*/
+    static Protos.Key.Builder serializeEncryptableItem(EncryptableItem item) {
         Protos.Key.Builder proto = Protos.Key.newBuilder();
         if (item.isEncrypted() && item.getEncryptedData() != null) {
             // The encrypted data can be missing for an "encrypted" key in the case of a deterministic wallet for
@@ -46,7 +47,7 @@ public class SimpleKeyChain extends BasicKeyChain {
                     .setEncryptedPrivateKey(ByteString.copyFrom(data.encryptedBytes))
                     .setInitialisationVector(ByteString.copyFrom(data.initialisationVector));
             // We don't allow mixing of encryption types at the moment.
-            checkState(item.getEncryptionType() == org.bitcoinj.wallet.Protos.Wallet.EncryptionType.ENCRYPTED_SCRYPT_AES, "We don't allow mixing of encryption types at the moment");
+            checkState(item.getEncryptionType() == com.microbitcoin.mbcj.wallet.Protos.Wallet.EncryptionType.ENCRYPTED_SCRYPT_AES, "We don't allow mixing of encryption types at the moment");
             proto.setType(Protos.Key.Type.ENCRYPTED_SCRYPT_AES);
         } else {
             final byte[] secret = item.getSecretBytes();
@@ -59,7 +60,8 @@ public class SimpleKeyChain extends BasicKeyChain {
         return proto;
     }
 
-    /*package*/ static Protos.Key.Builder serializeKey(ECKey key) {
+    /*package*/
+    static Protos.Key.Builder serializeKey(ECKey key) {
         Protos.Key.Builder protoKey = serializeEncryptableItem(key);
         protoKey.setPublicKey(ByteString.copyFrom(key.getPubKey()));
         return protoKey;

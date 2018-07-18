@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.util.GenericUtils;
+import com.microbitcoin.mbcj.core.Address;
 import com.microbitcoin.wallet.AddressBookProvider;
 import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.util.WalletUtils;
-
-import org.bitcoinj.core.Address;
 
 /**
  * @author John L. Jegutanis

@@ -13,16 +13,17 @@ import android.os.StrictMode;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import com.google.common.collect.ImmutableList;
 import com.microbitcoin.core.coins.CoinType;
+import com.microbitcoin.core.coins.MicroBitCoinTest;
 import com.microbitcoin.core.exchange.shapeshift.ShapeShift;
 import com.microbitcoin.core.util.HardwareSoftwareCompliance;
 import com.microbitcoin.core.wallet.Wallet;
 import com.microbitcoin.core.wallet.WalletAccount;
 import com.microbitcoin.core.wallet.WalletProtobufSerializer;
+import com.microbitcoin.mbcj.wallet.UnreadableWalletException;
 import com.microbitcoin.wallet.service.CoinService;
 import com.microbitcoin.wallet.service.CoinServiceImpl;
 import com.microbitcoin.wallet.util.Fonts;
@@ -32,9 +33,9 @@ import com.microbitcoin.wallet.util.NetworkUtils;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
+
 import org.bitcoinj.crypto.MnemonicCode;
-import org.bitcoinj.store.UnreadableWalletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +87,7 @@ public class WalletApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        new com.microbitcoin.mbcj.core.Context(MicroBitCoinTest.get());
 //        ACRA.init(this);
 
         config = new Configuration(PreferenceManager.getDefaultSharedPreferences(this));

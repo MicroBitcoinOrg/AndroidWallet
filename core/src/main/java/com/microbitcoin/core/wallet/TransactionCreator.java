@@ -4,29 +4,29 @@ import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.FeePolicy;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.ECKey;
+import com.microbitcoin.mbcj.core.InsufficientMoneyException;
+import com.microbitcoin.mbcj.core.NetworkParameters;
+import com.microbitcoin.mbcj.core.ScriptException;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionConfidence;
+import com.microbitcoin.mbcj.core.TransactionInput;
+import com.microbitcoin.mbcj.core.TransactionOutput;
+import com.microbitcoin.mbcj.core.VarInt;
+import com.microbitcoin.mbcj.script.Script;
+import com.microbitcoin.mbcj.signers.LocalTransactionSigner;
+import com.microbitcoin.mbcj.signers.MissingSigResolutionSigner;
+import com.microbitcoin.mbcj.signers.TransactionSigner;
+import com.microbitcoin.mbcj.wallet.DecryptingKeyBag;
+import com.microbitcoin.mbcj.wallet.KeyBag;
+import com.microbitcoin.mbcj.wallet.RedeemData;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.core.ScriptException;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionInput;
-import org.bitcoinj.core.TransactionOutput;
-import org.bitcoinj.core.VarInt;
-import org.bitcoinj.crypto.TransactionSignature;
-import org.bitcoinj.script.Script;
-import org.bitcoinj.script.ScriptBuilder;
-import org.bitcoinj.signers.LocalTransactionSigner;
-import org.bitcoinj.signers.MissingSigResolutionSigner;
-import org.bitcoinj.signers.TransactionSigner;
-import org.bitcoinj.wallet.CoinSelection;
-import org.bitcoinj.wallet.CoinSelector;
-import org.bitcoinj.wallet.DecryptingKeyBag;
-import org.bitcoinj.wallet.KeyBag;
-import org.bitcoinj.wallet.RedeemData;
+import com.microbitcoin.mbcj.wallet.CoinSelection;
+import com.microbitcoin.mbcj.wallet.CoinSelector;
+import com.microbitcoin.mbcj.wallet.Wallet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +42,7 @@ import static com.microbitcoin.core.Preconditions.checkState;
 /**
  * @author John L. Jegutanis
  */
+@SuppressWarnings("all")
 public class TransactionCreator {
     private static final Logger log = LoggerFactory.getLogger(TransactionCreator.class);
     private final WalletAccount account;
@@ -66,8 +67,8 @@ public class TransactionCreator {
      * according to the instructions in the request. The transaction in the request is modified by this method.
      *
      * @param req a SendRequest that contains the incomplete transaction and details for how to make it valid.
-     * @throws org.bitcoinj.core.InsufficientMoneyException if the request could not be completed due to not enough balance.
-     * @throws IllegalArgumentException                     if you try and complete the same SendRequest twice
+     * @throws com.microbitcoin.mbcj.core.InsufficientMoneyException if the request could not be completed due to not enough balance.
+     * @throws IllegalArgumentException                              if you try and complete the same SendRequest twice
      */
     void completeTx(SendRequest req) throws InsufficientMoneyException {
         lock.lock();
@@ -105,7 +106,7 @@ public class TransactionCreator {
                 for (TransactionOutput output : req.tx.getOutputs())
                     if (output.getValue().compareTo(coinType.getSoftDustLimit()) < 0) {
                         if (output.getValue().compareTo(coinType.getMinNonDust()) < 0)
-                            throw new org.bitcoinj.core.Wallet.DustySendRequested();
+                            throw new Wallet.DustySendRequested();
                         numberOfSoftDustOutputs++;
                     }
             }
@@ -144,7 +145,7 @@ public class TransactionCreator {
                 final Coin feePerKb = req.feePerKb == null ? Coin.ZERO : req.feePerKb;
                 Transaction tx = req.tx;
                 if (!adjustOutputDownwardsForFee(tx, bestCoinSelection, baseFee, feePerKb))
-                    throw new org.bitcoinj.core.Wallet.CouldNotAdjustDownwards();
+                    throw new com.microbitcoin.mbcj.wallet.Wallet.CouldNotAdjustDownwards();
             }
 
             if (bestChangeOutput != null) {
@@ -164,7 +165,7 @@ public class TransactionCreator {
             // Check size.
             int size = req.tx.bitcoinSerialize().length;
             if (size > Transaction.MAX_STANDARD_TX_SIZE)
-                throw new org.bitcoinj.core.Wallet.ExceededMaxTransactionSize();
+                throw new com.microbitcoin.mbcj.wallet.Wallet.ExceededMaxTransactionSize();
 
             final Coin calculatedFee = req.tx.getFee();
             if (calculatedFee != null) {
@@ -190,7 +191,7 @@ public class TransactionCreator {
     /**
      * <p>Given a send request containing transaction, attempts to sign it's inputs. This method expects transaction
      * to have all necessary inputs connected or they will be ignored.</p>
-     * <p>Actual signing is done by pluggable {@link org.bitcoinj.signers.LocalTransactionSigner}
+     * <p>Actual signing is done by pluggable {@link com.microbitcoin.mbcj.signers.LocalTransactionSigner}
      * and it's not guaranteed that transaction will be complete in the end.</p>
      */
     void signTransaction(SendRequest req) {

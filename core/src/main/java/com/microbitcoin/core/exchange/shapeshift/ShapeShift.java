@@ -13,19 +13,20 @@ import com.microbitcoin.core.exchange.shapeshift.data.ShapeShiftNormalTx;
 import com.microbitcoin.core.exchange.shapeshift.data.ShapeShiftRate;
 import com.microbitcoin.core.exchange.shapeshift.data.ShapeShiftTime;
 import com.microbitcoin.core.exchange.shapeshift.data.ShapeShiftTxStatus;
+import com.microbitcoin.mbcj.core.Address;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-import org.bitcoinj.core.Address;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+
 
 import static com.microbitcoin.core.Preconditions.checkNotNull;
 import static com.microbitcoin.core.Preconditions.checkState;
@@ -55,7 +56,8 @@ public class ShapeShift extends Connection {
         super(client);
     }
 
-    public ShapeShift() {}
+    public ShapeShift() {
+    }
 
     public void setApiPublicKey(String apiPublicKey) {
         this.apiPublicKey = apiPublicKey;
@@ -63,7 +65,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Get List of Supported Coins
-     *
+     * <p>
      * List of all the currencies that Shapeshift currently supports at any given time. Sometimes
      * coins become temporarily unavailable during updates or unexpected service issues.
      */
@@ -74,7 +76,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Get Market Info
-     *
+     * <p>
      * This is a combined call for {@link #getRate(CoinType, CoinType) getRate()} and
      * {@link #getLimit(CoinType, CoinType) getLimit()} API calls.
      */
@@ -85,7 +87,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Get Market Info
-     *
+     * <p>
      * This is a combined call for {@link #getRate(CoinType, CoinType) getRate()} and
      * {@link #getLimit(CoinType, CoinType) getLimit()} API calls.
      */
@@ -101,7 +103,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Rate
-     *
+     * <p>
      * Gets the current rate offered by Shapeshift. This is an estimate because the rate can
      * occasionally change rapidly depending on the markets. The rate is also a 'use-able' rate not
      * a direct market rate. Meaning multiplying your input coin amount times the rate should give
@@ -120,7 +122,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Deposit Limit
-     *
+     * <p>
      * Gets the current deposit limit set by Shapeshift. Amounts deposited over this limit will be
      * sent to the return address if one was entered, otherwise the user will need to contact
      * ShapeShift support to retrieve their coins. This is an estimate because a sudden market swing
@@ -138,7 +140,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Time Remaining on Fixed Amount Transaction
-     *
+     * <p>
      * When a transaction is created with a fixed amount requested there is a 10 minute window for
      * the deposit. After the 10 minute window if the deposit has not been received the transaction
      * expires and a new one must be created. This api call returns how many seconds are left before
@@ -152,7 +154,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Status of deposit to address
-     *
+     * <p>
      * This returns the status of the most recent deposit transaction to the address.
      */
     public ShapeShiftTxStatus getTxStatus(Address address) throws ShapeShiftException, IOException {
@@ -165,7 +167,7 @@ public class ShapeShift extends Connection {
 
     /**
      * Normal Transaction
-     *
+     * <p>
      * Make a normal exchange and receive with {@code withdrawal} address. The exchange pair is
      * determined from the {@link CoinType}s of {@code refund} and {@code withdrawal}.
      */
@@ -194,12 +196,12 @@ public class ShapeShift extends Connection {
 
     /**
      * Fixed Amount Transaction
-     *
+     * <p>
      * This call allows you to request a fixed amount to be sent to the {@code withdrawal} address.
      * You provide a withdrawal address and the amount you want sent to it. We return the amount
      * to deposit and the address to deposit to. This allows you to use shapeshift as a payment
      * mechanism.
-     *
+     * <p>
      * The exchange pair is determined from the {@link CoinType}s of {@code refund} and
      * {@code withdrawal}.
      */
@@ -232,12 +234,12 @@ public class ShapeShift extends Connection {
 
     /**
      * Request email receipt
-     *
+     * <p>
      * This call allows you to request a fixed amount to be sent to the {@code withdrawal} address.
      * You provide a withdrawal address and the amount you want sent to it. We return the amount
      * to deposit and the address to deposit to. This allows you to use shapeshift as a payment
      * mechanism.
-     *
+     * <p>
      * The exchange pair is determined from the {@link CoinType}s of {@code refund} and
      * {@code withdrawal}.
      */
@@ -287,7 +289,7 @@ public class ShapeShift extends Connection {
 
     private void checkAddress(Address expected, Address address) throws ShapeShiftException {
         if (!expected.getParameters().equals(address.getParameters()) ||
-            !expected.toString().equals(address.toString())) {
+                !expected.toString().equals(address.toString())) {
             String errorMsg = String.format("Address mismatch, expected %s but got %s.",
                     expected, address);
             throw new ShapeShiftException(errorMsg);

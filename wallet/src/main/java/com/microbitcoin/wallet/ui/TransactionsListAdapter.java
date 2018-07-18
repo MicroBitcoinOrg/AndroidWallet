@@ -40,11 +40,12 @@ import com.microbitcoin.wallet.util.Fonts;
 import com.microbitcoin.wallet.util.WalletUtils;
 
 import org.acra.ACRA;
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionConfidence.ConfidenceType;
+
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionConfidence;
+import com.microbitcoin.mbcj.core.TransactionConfidence.ConfidenceType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,6 +58,7 @@ import javax.annotation.Nonnull;
 /**
  * @author Andreas Schildbach
  */
+@SuppressWarnings("all")
 public class TransactionsListAdapter extends BaseAdapter {
     private final Context context;
     private final LayoutInflater inflater;
@@ -189,7 +191,8 @@ public class TransactionsListAdapter extends BaseAdapter {
         final TransactionConfidence confidence = tx.getConfidence();
         final ConfidenceType confidenceType = confidence.getConfidenceType();
         final boolean isOwn = confidence.getSource().equals(TransactionConfidence.Source.SELF);
-        final boolean isMined = tx.isCoinBase() || tx.isCoinStake();
+//        final boolean isMined = tx.isCoinBase() || tx.isCoinStake();
+        final boolean isMined = tx.isCoinBase();
 //        final boolean isInternal = WalletUtils.isInternal(tx);
 
         final Coin value = tx.getValue(walletPocket);
@@ -359,7 +362,7 @@ public class TransactionsListAdapter extends BaseAdapter {
             if (label != null) {
                 labelCache.put(address, label);
             } else {
-                labelCache.put(address, (String)CACHE_NULL_MARKER);
+                labelCache.put(address, (String) CACHE_NULL_MARKER);
             }
             return label;
         } else {

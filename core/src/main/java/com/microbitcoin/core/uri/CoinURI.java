@@ -23,9 +23,9 @@ import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.util.GenericUtils;
 import com.google.common.collect.Lists;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

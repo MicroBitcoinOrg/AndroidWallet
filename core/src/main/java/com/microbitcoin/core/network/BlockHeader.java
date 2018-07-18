@@ -1,5 +1,6 @@
 package com.microbitcoin.core.network;
 
+
 import com.microbitcoin.core.coins.CoinType;
 
 /**

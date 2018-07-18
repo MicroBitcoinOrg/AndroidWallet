@@ -4,7 +4,7 @@ import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.coins.ValueType;
 
-import org.bitcoinj.core.Coin;
+import com.microbitcoin.mbcj.core.Coin;
 
 import java.io.Serializable;
 

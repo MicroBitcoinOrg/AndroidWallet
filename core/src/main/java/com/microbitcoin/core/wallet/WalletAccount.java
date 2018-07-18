@@ -6,12 +6,12 @@ import com.microbitcoin.core.coins.ValueType;
 import com.microbitcoin.core.network.interfaces.ConnectionEventListener;
 import com.microbitcoin.core.network.interfaces.TransactionEventListener;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionBag;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.wallet.KeyBag;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Sha256Hash;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionBag;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.wallet.KeyBag;
 import org.spongycastle.crypto.params.KeyParameter;
 
 import java.io.Serializable;

@@ -26,9 +26,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+
 import com.microbitcoin.core.coins.CoinType;
 
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 
 import java.util.List;
 

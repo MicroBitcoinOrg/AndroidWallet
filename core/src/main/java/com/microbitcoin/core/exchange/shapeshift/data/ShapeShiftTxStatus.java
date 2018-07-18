@@ -3,9 +3,9 @@ package com.microbitcoin.core.exchange.shapeshift.data;
 import com.microbitcoin.core.coins.CoinID;
 import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
 import org.json.JSONException;
 import org.json.JSONObject;
 

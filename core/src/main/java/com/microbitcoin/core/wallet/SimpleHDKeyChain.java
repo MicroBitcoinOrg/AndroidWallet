@@ -2,27 +2,28 @@ package com.microbitcoin.core.wallet;
 
 
 import com.microbitcoin.core.protos.Protos;
-import org.bitcoinj.core.BloomFilter;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.Utils;
-import org.bitcoinj.crypto.ChildNumber;
-import org.bitcoinj.crypto.DeterministicHierarchy;
-import org.bitcoinj.crypto.DeterministicKey;
-import org.bitcoinj.crypto.EncryptedData;
-import org.bitcoinj.crypto.HDKeyDerivation;
-import org.bitcoinj.crypto.HDUtils;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.crypto.KeyCrypterException;
-import org.bitcoinj.crypto.KeyCrypterScrypt;
-import org.bitcoinj.crypto.LazyECPoint;
-import org.bitcoinj.store.UnreadableWalletException;
-import org.bitcoinj.utils.Threading;
-import org.bitcoinj.wallet.EncryptableKeyChain;
-import org.bitcoinj.wallet.KeyBag;
-import org.bitcoinj.wallet.KeyChainEventListener;
-import org.bitcoinj.wallet.RedeemData;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.ByteString;
+import com.microbitcoin.mbcj.core.BloomFilter;
+import com.microbitcoin.mbcj.core.ECKey;
+import com.microbitcoin.mbcj.core.Utils;
+import com.microbitcoin.mbcj.crypto.ChildNumber;
+import com.microbitcoin.mbcj.crypto.DeterministicHierarchy;
+import com.microbitcoin.mbcj.crypto.DeterministicKey;
+import com.microbitcoin.mbcj.crypto.EncryptedData;
+import com.microbitcoin.mbcj.crypto.HDKeyDerivation;
+import com.microbitcoin.mbcj.crypto.HDUtils;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.crypto.KeyCrypterException;
+import com.microbitcoin.mbcj.crypto.KeyCrypterScrypt;
+import com.microbitcoin.mbcj.crypto.LazyECPoint;
+import com.microbitcoin.mbcj.utils.Threading;
+import com.microbitcoin.mbcj.wallet.EncryptableKeyChain;
+import com.microbitcoin.mbcj.wallet.KeyBag;
+import com.microbitcoin.mbcj.wallet.KeyChain;
+import com.microbitcoin.mbcj.wallet.RedeemData;
+import com.microbitcoin.mbcj.wallet.UnreadableWalletException;
+import com.microbitcoin.mbcj.wallet.listeners.KeyChainEventListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,7 @@ import static com.google.common.collect.Lists.newLinkedList;
  */
 
 
+@SuppressWarnings("all")
 public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
     private static final Logger log = LoggerFactory.getLogger(SimpleHDKeyChain.class);
 
@@ -154,7 +156,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
             if (!isLeaf(key)) continue; // Not a leaf key.
             DeterministicKey parent = hierarchy.get(checkNotNull(key.getParent(), "Key has no parent").getPath(), false, false);
             // Clone the key to the new encrypted hierarchy.
-            key = new DeterministicKey(key.getPubOnly(), parent);
+            key = new DeterministicKey(key.dropPrivateBytes(), parent);
             hierarchy.putKey(key);
             simpleKeyChain.importKey(key);
         }
@@ -185,8 +187,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
         lock.lock();
         try {
             return rootKey.isEncrypted();
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }
@@ -195,7 +196,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
      * Get an unused key, without actually issuing it.
      * This is useful to show a receiving key in the interface
      */
-    public DeterministicKey getCurrentUnusedKey(KeyPurpose purpose) {
+    public DeterministicKey getCurrentUnusedKey(KeyChain.KeyPurpose purpose) {
         lock.lock();
         try {
             List<DeterministicKey> keys = null;
@@ -245,15 +246,19 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
         }
     }
 
-    /** Returns a freshly derived key that has not been returned by this method before. */
+    /**
+     * Returns a freshly derived key that has not been returned by this method before.
+     */
     @Override
-    public DeterministicKey getKey(KeyPurpose purpose) {
+    public DeterministicKey getKey(KeyChain.KeyPurpose purpose) {
         return getKeys(purpose, 1).get(0);
     }
 
-    /** Returns freshly derived key/s that have not been returned by this method before. */
+    /**
+     * Returns freshly derived key/s that have not been returned by this method before.
+     */
     @Override
-    public List<DeterministicKey> getKeys(KeyPurpose purpose, int numberOfKeys) {
+    public List<DeterministicKey> getKeys(KeyChain.KeyPurpose purpose, int numberOfKeys) {
         checkArgument(numberOfKeys > 0, "Need at least 1 key");
         lock.lock();
         try {
@@ -409,12 +414,16 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
         }
     }
 
-    /** Returns the deterministic key for the given absolute path in the hierarchy. */
+    /**
+     * Returns the deterministic key for the given absolute path in the hierarchy.
+     */
     protected DeterministicKey getKeyByPath(ChildNumber... path) {
         return getKeyByPath(ImmutableList.<ChildNumber>copyOf(path));
     }
 
-    /** Returns the deterministic key for the given absolute path in the hierarchy. */
+    /**
+     * Returns the deterministic key for the given absolute path in the hierarchy.
+     */
     protected DeterministicKey getKeyByPath(ImmutableList<ChildNumber> path) {
         return hierarchy.get(path, false, false);
     }
@@ -424,7 +433,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
      * but can't spend money from it.</p>
      */
     public DeterministicKey getWatchingKey() {
-        return rootKey.getPubOnly();
+        return rootKey.dropPrivateBytes();
     }
 
     @Override
@@ -639,7 +648,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
     }
 
     @Override
-    public List<org.bitcoinj.wallet.Protos.Key> serializeToProtobuf() {
+    public List<com.microbitcoin.mbcj.wallet.Protos.Key> serializeToProtobuf() {
         throw new RuntimeException("Not implemented. Use HDKeyChain.toProtobuf() instead.");
     }
 
@@ -693,7 +702,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
             checkState(key.isEncrypted(), "Key is not encrypted");
             DeterministicKey parent = chain.hierarchy.get(checkNotNull(key.getParent(), "Key has null parent").getPath(), false, false);
             // Clone the key to the new decrypted hierarchy.
-            key = new DeterministicKey(key.getPubOnly(), parent);
+            key = new DeterministicKey(key.dropPrivateBytes(), parent);
             chain.hierarchy.putKey(key);
             chain.simpleKeyChain.importKeys(key);
         }
@@ -708,7 +717,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
 
     @Override
     public boolean checkPassword(CharSequence password) {
-        checkNotNull(password,"Password is null");
+        checkNotNull(password, "Password is null");
         checkState(getKeyCrypter() != null, "Key chain not encrypted");
         return checkAESKey(getKeyCrypter().deriveKey(password));
     }
@@ -848,7 +857,7 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
     /**
      * Pre-generate enough keys to reach the lookahead size, but only if there are more than the lookaheadThreshold to
      * be generated, so that the Bloom filter does not have to be regenerated that often.
-     *
+     * <p>
      * The returned mutable list of keys must be inserted into the basic key chain.
      */
     private List<DeterministicKey> maybeLookAhead(DeterministicKey parent, int issued, int lookaheadSize, int lookaheadThreshold) {
@@ -862,12 +871,12 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
         log.info("{} keys needed for {} = {} issued + {} lookahead size + {} lookahead threshold - {} num children",
                 needed, parent.getPathAsString(), issued, lookaheadSize, lookaheadThreshold, numChildren);
 
-        List<DeterministicKey> result  = new ArrayList<DeterministicKey>(needed);
+        List<DeterministicKey> result = new ArrayList<DeterministicKey>(needed);
         long now = System.currentTimeMillis();
         int nextChild = numChildren;
         for (int i = 0; i < needed; i++) {
             DeterministicKey key = HDKeyDerivation.deriveThisOrNextChildKey(parent, nextChild);
-            key = key.getPubOnly();
+            key = key.dropPrivateBytes();
             hierarchy.putKey(key);
             result.add(key);
             nextChild = key.getChildNumber().num() + 1;
@@ -892,7 +901,8 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
                 if (parent == null) continue;
                 if (detkey.getPath().size() <= treeSize) continue;
                 if (parent.equals(internalKey)) continue;
-                if (parent.equals(externalKey) && detkey.getChildNumber().num() >= issuedExternalKeys) continue;
+                if (parent.equals(externalKey) && detkey.getChildNumber().num() >= issuedExternalKeys)
+                    continue;
                 issuedKeys.add(detkey);
             }
             return issuedKeys;
@@ -939,8 +949,10 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
                 DeterministicKey parent = detkey.getParent();
                 if (parent == null) continue;
                 if (detkey.getPath().size() <= treeSize) continue;
-                if (parent.equals(internalKey) && detkey.getChildNumber().num() > issuedInternalKeys) continue;
-                if (parent.equals(externalKey) && detkey.getChildNumber().num() > issuedExternalKeys) continue;
+                if (parent.equals(internalKey) && detkey.getChildNumber().num() > issuedInternalKeys)
+                    continue;
+                if (parent.equals(externalKey) && detkey.getChildNumber().num() > issuedExternalKeys)
+                    continue;
                 issuedKeys.add(detkey);
             }
             return issuedKeys;
@@ -957,8 +969,10 @@ public class SimpleHDKeyChain implements EncryptableKeyChain, KeyBag {
         for (ECKey key : getKeys(true)) {
             DeterministicKey dKey = (DeterministicKey) key;
             if (isLeaf(dKey)) {
-                if (dKey.getParent().equals(internalKey) && dKey.getChildNumber().num() >= issuedInternalKeys + lookaheadSize) continue;
-                if (dKey.getParent().equals(externalKey) && dKey.getChildNumber().num() >= issuedExternalKeys + lookaheadSize) continue;
+                if (dKey.getParent().equals(internalKey) && dKey.getChildNumber().num() >= issuedInternalKeys + lookaheadSize)
+                    continue;
+                if (dKey.getParent().equals(externalKey) && dKey.getChildNumber().num() >= issuedExternalKeys + lookaheadSize)
+                    continue;
 
                 keys.add(dKey);
             }

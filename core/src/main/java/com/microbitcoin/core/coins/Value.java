@@ -17,9 +17,9 @@ package com.microbitcoin.core.coins;
  * limitations under the License.
  */
 
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Monetary;
 import com.google.common.math.LongMath;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.Monetary;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Represents a monetary value. This class is immutable.

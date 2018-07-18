@@ -23,10 +23,10 @@ import com.microbitcoin.wallet.util.LayoutUtils;
 import com.microbitcoin.wallet.util.Qr;
 import com.microbitcoin.wallet.util.WeakHandler;
 
-import org.bitcoinj.crypto.DeterministicKey;
-import org.bitcoinj.crypto.HDKeyDerivation;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.wallet.DeterministicSeed;
+import com.microbitcoin.mbcj.crypto.DeterministicKey;
+import com.microbitcoin.mbcj.crypto.HDKeyDerivation;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.wallet.DeterministicSeed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongycastle.crypto.params.KeyParameter;

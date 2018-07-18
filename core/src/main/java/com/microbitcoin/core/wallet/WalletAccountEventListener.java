@@ -1,8 +1,7 @@
 package com.microbitcoin.core.wallet;
 
 import com.microbitcoin.core.coins.Value;
-
-import org.bitcoinj.core.Transaction;
+import com.microbitcoin.mbcj.core.Transaction;
 
 /**
  * @author John L. Jegutanis

@@ -34,7 +34,7 @@ import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.util.Fonts;
 import com.microbitcoin.wallet.util.WalletUtils;
 
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 
 import java.util.ArrayList;
 import java.util.Collection;

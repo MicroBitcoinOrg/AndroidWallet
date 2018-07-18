@@ -13,7 +13,7 @@ import com.microbitcoin.core.util.GenericUtils;
 import com.microbitcoin.wallet.AddressBookProvider;
 import com.microbitcoin.wallet.R;
 
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 
 /**
  * @author John L. Jegutanis

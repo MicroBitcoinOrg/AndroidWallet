@@ -22,7 +22,6 @@ dependencies {
 
 //    compile 'org.json:json:20140107'
     compile 'org.json:json:20080701'
-
     compile 'com.squareup.okhttp:okhttp:2.3.0'
 
     testCompile 'junit:junit:4.11'

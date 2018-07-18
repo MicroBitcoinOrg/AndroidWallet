@@ -13,9 +13,9 @@ import com.microbitcoin.wallet.AddressBookProvider;
 import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.ui.widget.SendOutput;
 
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionOutput;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionOutput;
 
 import java.util.ArrayList;
 import java.util.List;

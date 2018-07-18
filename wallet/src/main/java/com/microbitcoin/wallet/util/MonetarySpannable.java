@@ -24,10 +24,11 @@ import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 
-import com.microbitcoin.core.util.MonetaryFormat;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.Monetary;
+import com.microbitcoin.mbcj.utils.MonetaryFormat;
 import com.microbitcoin.wallet.Constants;
 
-import org.bitcoinj.core.Monetary;
 
 import java.util.regex.Matcher;
 

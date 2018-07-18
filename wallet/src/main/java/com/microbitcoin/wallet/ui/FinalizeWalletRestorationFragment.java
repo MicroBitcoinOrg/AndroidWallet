@@ -22,7 +22,7 @@ import com.microbitcoin.wallet.service.CoinService;
 import com.microbitcoin.wallet.service.CoinServiceImpl;
 import com.microbitcoin.wallet.util.WeakHandler;
 
-import org.bitcoinj.crypto.KeyCrypterScrypt;
+import com.microbitcoin.mbcj.crypto.KeyCrypterScrypt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -31,12 +31,12 @@ import com.microbitcoin.core.wallet.AbstractWallet;
 import com.microbitcoin.core.wallet.WalletAccount;
 import com.microbitcoin.wallet.Constants;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ScriptException;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionOutput;
-import org.bitcoinj.script.Script;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.ScriptException;
+import com.microbitcoin.mbcj.core.Sha256Hash;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionOutput;
+import com.microbitcoin.mbcj.script.Script;
 
 import java.util.ArrayList;
 import java.util.Currency;

@@ -24,7 +24,7 @@ import com.microbitcoin.core.util.ExchangeRate;
 import com.microbitcoin.wallet.ui.widget.AmountEditView;
 import com.microbitcoin.wallet.ui.widget.AmountEditView.Listener;
 
-import org.bitcoinj.core.Coin;
+import com.microbitcoin.mbcj.core.Coin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

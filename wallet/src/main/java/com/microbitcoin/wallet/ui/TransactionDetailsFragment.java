@@ -27,11 +27,11 @@ import com.microbitcoin.wallet.util.UiUtils;
 import com.microbitcoin.wallet.util.WeakHandler;
 
 import org.acra.ACRA;
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionOutput;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Sha256Hash;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionConfidence;
+import com.microbitcoin.mbcj.core.TransactionOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

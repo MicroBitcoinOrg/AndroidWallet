@@ -12,18 +12,19 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.microbitcoin.mbcj.core.ScriptException;
+import com.microbitcoin.mbcj.core.Sha256Hash;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionConfidence;
+import com.microbitcoin.mbcj.core.TransactionInput;
+import com.microbitcoin.mbcj.core.TransactionOutput;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ScriptException;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionInput;
-import org.bitcoinj.core.TransactionOutput;
-import org.bitcoinj.core.Utils;
-import org.bitcoinj.utils.ListenerRegistration;
-import org.bitcoinj.utils.Threading;
-import org.bitcoinj.wallet.WalletTransaction;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Utils;
+import com.microbitcoin.mbcj.utils.ListenerRegistration;
+import com.microbitcoin.mbcj.utils.Threading;
+import com.microbitcoin.mbcj.wallet.WalletTransaction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ import static com.microbitcoin.core.Preconditions.checkState;
 /**
  * @author John L. Jegutanis
  */
+@SuppressWarnings("all")
 abstract public class TransactionWatcherWallet implements WalletAccount {
     private static final Logger log = LoggerFactory.getLogger(TransactionWatcherWallet.class);
 
@@ -101,7 +103,7 @@ abstract public class TransactionWatcherWallet implements WalletAccount {
     private List<ListenerRegistration<WalletAccountEventListener>> listeners;
 
     // Wallet that this account belongs
-    @Nullable private transient Wallet wallet = null;
+    @Nullable private   Wallet wallet = null;
 
     private Runnable saveLaterRunnable = new Runnable() {
         @Override
@@ -480,7 +482,7 @@ abstract public class TransactionWatcherWallet implements WalletAccount {
             Value value = coinType.value(0);
             for (Transaction tx : txs) {
                 if (toMe) {
-                    value = value.add(tx.getValueSentToMe(this, false));
+                    value = value.add(tx.getValueSentToMe(this));
                 } else {
                     value = value.add(tx.getValue(this));
                 }

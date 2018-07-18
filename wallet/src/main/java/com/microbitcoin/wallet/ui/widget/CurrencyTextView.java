@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.coins.ValueType;
-import com.microbitcoin.core.util.MonetaryFormat;
+import com.microbitcoin.mbcj.utils.MonetaryFormat;
 import com.microbitcoin.wallet.Constants;
 import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.util.MonetarySpannable;
@@ -38,6 +38,7 @@ import javax.annotation.Nonnull;
  * @author Andreas Schildbach
  * @author John L. Jegutanis
  */
+@SuppressWarnings("all")
 public final class CurrencyTextView extends TextView {
     private ValueType type = null;
     private Value amount = null;

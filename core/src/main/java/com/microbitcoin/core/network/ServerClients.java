@@ -1,5 +1,6 @@
 package com.microbitcoin.core.network;
 
+
 import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.wallet.WalletAccount;
 
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * @author John L. Jegutanis
  */
+@SuppressWarnings("all")
 public class ServerClients {
     private static final Logger log = LoggerFactory.getLogger(ServerClient.class);
     private final ConnectivityHelper connectivityHelper;

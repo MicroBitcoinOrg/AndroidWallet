@@ -14,8 +14,8 @@ import com.microbitcoin.wallet.Constants;
 import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.ui.widget.AddressView;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -22,13 +22,13 @@ import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.coins.ValueType;
 
+import com.microbitcoin.mbcj.core.Coin;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-import org.bitcoinj.core.Coin;
 
 /**
  * An exchange rate is expressed as a ratio of a pair of {@link Value} amounts.

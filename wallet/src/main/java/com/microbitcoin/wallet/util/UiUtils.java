@@ -24,7 +24,7 @@ import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.ui.EditAddressBookEntryFragment;
 
 import org.acra.ACRA;
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

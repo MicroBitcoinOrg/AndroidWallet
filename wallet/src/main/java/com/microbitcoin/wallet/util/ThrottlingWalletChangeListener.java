@@ -28,7 +28,7 @@ import com.microbitcoin.core.wallet.WalletAccount;
 import com.microbitcoin.core.wallet.WalletAccountEventListener;
 import com.microbitcoin.core.wallet.WalletPocketConnectivity;
 
-import org.bitcoinj.core.Transaction;
+import com.microbitcoin.mbcj.core.Transaction;
 
 /**
  * @author Andreas Schildbach

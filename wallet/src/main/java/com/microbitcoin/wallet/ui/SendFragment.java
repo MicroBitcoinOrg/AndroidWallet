@@ -47,6 +47,7 @@ import com.microbitcoin.core.util.ExchangeRate;
 import com.microbitcoin.core.util.GenericUtils;
 import com.microbitcoin.core.wallet.WalletAccount;
 import com.microbitcoin.core.wallet.exceptions.NoSuchPocketException;
+import com.microbitcoin.mbcj.wallet.Wallet;
 import com.microbitcoin.wallet.AddressBookProvider;
 import com.microbitcoin.wallet.Configuration;
 import com.microbitcoin.wallet.Constants;
@@ -62,13 +63,14 @@ import com.microbitcoin.wallet.util.WeakHandler;
 import com.google.common.base.Charsets;
 
 import org.acra.ACRA;
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.Wallet;
-import org.bitcoinj.crypto.KeyCrypterException;
-import org.bitcoinj.utils.Threading;
+
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.InsufficientMoneyException;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.crypto.KeyCrypterException;
+import com.microbitcoin.mbcj.utils.Threading;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +121,8 @@ public class SendFragment extends Fragment {
 
     Handler handler = new MyHandler(this);
 
-    @Nullable private Value lastBalance; // TODO setup wallet watcher for the latest balance
+    @Nullable
+    private Value lastBalance; // TODO setup wallet watcher for the latest balance
     private AutoCompleteTextView sendToAddressView;
     private AddressView sendToStaticAddressView;
     private TextView addressError;
@@ -190,7 +193,6 @@ public class SendFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     public SendFragment() {
@@ -394,7 +396,8 @@ public class SendFragment extends Fragment {
         // threshold or the max size. It also changes the bottom padding of the message field
         // to accommodate the counter.
         txMessageView.addTextChangedListener(new EditViewListener() {
-            @Override public void afterTextChanged(final Editable s) {
+            @Override
+            public void afterTextChanged(final Editable s) {
                 // Not very efficient because it creates a new String object on each key press
                 int length = s.toString().getBytes(Charsets.UTF_8).length;
                 boolean isTxMessageValidNow = true;
@@ -424,7 +427,8 @@ public class SendFragment extends Fragment {
                 }
             }
 
-            @Override public void onFocusChange(final View v, final boolean hasFocus) {
+            @Override
+            public void onFocusChange(final View v, final boolean hasFocus) {
                 if (!hasFocus) {
                     validateTxMessage();
                 }
@@ -590,6 +594,8 @@ public class SendFragment extends Fragment {
     }
 
     public void onMakeTransaction(Address toAddress, Value amount, @Nullable TxMessage txMessage) {
+        log.info("Test onMakeTransaction " + toAddress + " / " + amount + " / " + txMessage);
+
         Intent intent = new Intent(getActivity(), SignTransactionActivity.class);
 
         // Decide if emptying wallet or not
@@ -803,7 +809,6 @@ public class SendFragment extends Fragment {
         }
         return min;
     }
-
 
 
     private boolean everythingValid() {
@@ -1066,6 +1071,7 @@ public class SendFragment extends Fragment {
 
     public interface Listener {
         public void onTransactionBroadcastSuccess(WalletAccount pocket, Transaction transaction);
+
         public void onTransactionBroadcastFailure(WalletAccount pocket, Transaction transaction);
     }
 
@@ -1169,7 +1175,8 @@ public class SendFragment extends Fragment {
         }
 
         @Override
-        public void onLoaderReset(final Loader<Cursor> loader) { }
+        public void onLoaderReset(final Loader<Cursor> loader) {
+        }
     };
 
     private void onLocalExchangeRatesUpdate(HashMap<String, ExchangeRate> rates) {
@@ -1201,7 +1208,9 @@ public class SendFragment extends Fragment {
     }
 
     private static class MyHandler extends WeakHandler<SendFragment> {
-        public MyHandler(SendFragment referencingObject) { super(referencingObject); }
+        public MyHandler(SendFragment referencingObject) {
+            super(referencingObject);
+        }
 
         @Override
         protected void weakHandleMessage(SendFragment ref, Message msg) {

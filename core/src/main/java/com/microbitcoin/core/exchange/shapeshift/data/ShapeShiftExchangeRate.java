@@ -23,7 +23,7 @@ import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.coins.ValueType;
 import com.microbitcoin.core.util.ExchangeRateBase;
 
-import org.bitcoinj.core.Coin;
+import com.microbitcoin.mbcj.core.Coin;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;

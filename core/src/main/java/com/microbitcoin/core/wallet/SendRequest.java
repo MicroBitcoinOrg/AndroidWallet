@@ -1,13 +1,13 @@
 /**
  * Copyright 2013 Google Inc.
  * Copyright 2014 Andreas Schildbach
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,15 +18,15 @@ package com.microbitcoin.core.wallet;
 
 
 import com.microbitcoin.core.coins.CoinType;
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.Wallet.MissingSigsMode;
-import org.bitcoinj.wallet.CoinSelector;
 
 import com.microbitcoin.core.messages.TxMessage;
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.wallet.CoinSelector;
+import com.microbitcoin.mbcj.wallet.Wallet;
 
 import org.spongycastle.crypto.params.KeyParameter;
 
@@ -40,7 +40,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * just simplify the most common use cases. You may wish to customize a SendRequest if you want to attach a fee or
  * modify the change address.
  */
-public class SendRequest implements Serializable{
+@SuppressWarnings("all")
+public class SendRequest implements Serializable {
 
     /**
      * The blockchain network (Bitcoin, Dogecoin,..) that this request is going to transact
@@ -130,14 +131,14 @@ public class SendRequest implements Serializable{
      * If null then no decryption will be performed and if decryption is required an exception will be thrown.
      * You can get this from a password by doing wallet.getKeyCrypter().deriveKey(password).
      */
-    transient public KeyParameter aesKey = null;
+      public KeyParameter aesKey = null;
 
     /**
      * If not null, the {@link org.bitcoinj.wallet.CoinSelector} to use instead of the wallets default. Coin selectors are
      * responsible for choosing which transaction outputs (coins) in a wallet to use given the desired send value
      * amount.
      */
-    transient public CoinSelector coinSelector = null;
+      public CoinSelector coinSelector = null;
 
     /**
      * If true (the default), the outputs will be shuffled during completion to randomize the location of the change
@@ -151,7 +152,7 @@ public class SendRequest implements Serializable{
      * throw an exception on missing signature ({@link MissingSigsMode#THROW}).
      * @see MissingSigsMode
      */
-    transient public MissingSigsMode missingSigsMode = MissingSigsMode.THROW;
+      public Wallet.MissingSigsMode missingSigsMode = Wallet.MissingSigsMode.THROW;
 
     /**
      * Attaches a message to the transaction. There is no guarantee that the coin supports messages
@@ -163,7 +164,8 @@ public class SendRequest implements Serializable{
     // Tracks if this has been passed to wallet.completeTx already: just a safety check.
     boolean completed;
 
-    private SendRequest() {}
+    private SendRequest() {
+    }
 
     /**
      * <p>Creates a new SendRequest to the given address for the given value.</p>

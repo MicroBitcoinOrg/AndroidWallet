@@ -23,7 +23,7 @@ import com.microbitcoin.wallet.WalletApplication;
 import com.microbitcoin.wallet.util.ThrottlingWalletChangeListener;
 import com.microbitcoin.wallet.util.WeakHandler;
 
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

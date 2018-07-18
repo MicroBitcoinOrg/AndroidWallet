@@ -41,10 +41,10 @@ import com.microbitcoin.wallet.util.ThrottlingWalletChangeListener;
 import com.microbitcoin.wallet.util.WeakHandler;
 import com.google.common.collect.Lists;
 
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.utils.Threading;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionConfidence;
+import com.microbitcoin.mbcj.utils.Threading;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

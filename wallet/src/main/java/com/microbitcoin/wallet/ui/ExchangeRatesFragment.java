@@ -53,7 +53,7 @@ import com.microbitcoin.wallet.WalletApplication;
 import com.microbitcoin.wallet.ui.widget.Amount;
 import com.microbitcoin.wallet.util.WalletUtils;
 
-import org.bitcoinj.core.Coin;
+import com.microbitcoin.mbcj.core.Coin;
 
 import javax.annotation.CheckForNull;
 

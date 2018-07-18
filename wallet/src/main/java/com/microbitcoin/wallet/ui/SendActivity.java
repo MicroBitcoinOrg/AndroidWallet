@@ -6,7 +6,7 @@ import android.widget.Toast;
 import com.microbitcoin.core.wallet.WalletAccount;
 import com.microbitcoin.wallet.R;
 
-import org.bitcoinj.core.Transaction;
+import com.microbitcoin.mbcj.core.Transaction;
 
 
 /**

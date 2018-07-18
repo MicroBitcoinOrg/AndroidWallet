@@ -2,13 +2,13 @@
  * Copyright 2013 Google Inc.
  * Copyright 2014 Andreas Schildbach
  * Copyright 2014 John L. Jegutanis
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,22 +18,22 @@
 
 package com.microbitcoin.core.wallet;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.protos.Protos;
 import com.microbitcoin.core.wallet.exceptions.Bip44KeyLookAheadExceededException;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.core.ECKey;
+import com.microbitcoin.mbcj.core.InsufficientMoneyException;
+import com.microbitcoin.mbcj.crypto.ChildNumber;
+import com.microbitcoin.mbcj.crypto.DeterministicKey;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.script.Script;
+import com.microbitcoin.mbcj.wallet.RedeemData;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.crypto.ChildNumber;
-import org.bitcoinj.crypto.DeterministicKey;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.script.Script;
-import org.bitcoinj.wallet.RedeemData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongycastle.crypto.params.KeyParameter;
@@ -50,24 +50,23 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import static com.microbitcoin.core.Preconditions.checkArgument;
 import static com.microbitcoin.core.Preconditions.checkNotNull;
 import static com.microbitcoin.core.Preconditions.checkState;
-import static org.bitcoinj.wallet.KeyChain.KeyPurpose.CHANGE;
-import static org.bitcoinj.wallet.KeyChain.KeyPurpose.RECEIVE_FUNDS;
-import static org.bitcoinj.wallet.KeyChain.KeyPurpose.REFUND;
+import static com.microbitcoin.mbcj.wallet.KeyChain.KeyPurpose.CHANGE;
+import static com.microbitcoin.mbcj.wallet.KeyChain.KeyPurpose.RECEIVE_FUNDS;
+import static com.microbitcoin.mbcj.wallet.KeyChain.KeyPurpose.REFUND;
 
 /**
  * @author John L. Jegutanis
- *
- *
  */
+@SuppressWarnings("all")
 public class WalletPocketHD extends AbstractWallet {
     private static final Logger log = LoggerFactory.getLogger(WalletPocketHD.class);
 
     private final TransactionCreator transactionCreator;
 
-    @VisibleForTesting SimpleHDKeyChain keys;
+    @VisibleForTesting
+    SimpleHDKeyChain keys;
 
     public WalletPocketHD(DeterministicKey rootKey, CoinType coinType,
                           @Nullable KeyCrypter keyCrypter, @Nullable KeyParameter key) {
@@ -123,7 +122,8 @@ public class WalletPocketHD extends AbstractWallet {
         }
     }
 
-    @VisibleForTesting Protos.WalletPocket toProtobuf() {
+    @VisibleForTesting
+    Protos.WalletPocket toProtobuf() {
         lock.lock();
         try {
             return WalletPocketProtobufSerializer.toProtobuf(this);
@@ -171,10 +171,10 @@ public class WalletPocketHD extends AbstractWallet {
 
     /**
      * Encrypt the keys in the group using the KeyCrypter and the AES key. A good default KeyCrypter to use is
-     * {@link org.bitcoinj.crypto.KeyCrypterScrypt}.
+     * {@link com.microbitcoin.mbcj.crypto.KeyCrypterScrypt}.
      *
-     * @throws org.bitcoinj.crypto.KeyCrypterException Thrown if the wallet encryption fails for some reason,
-     *         leaving the group unchanged.
+     * @throws com.microbitcoin.mbcj.crypto.KeyCrypterException Thrown if the wallet encryption fails for some reason,
+     *                                                          leaving the group unchanged.
      */
     @Override
     public void encrypt(KeyCrypter keyCrypter, KeyParameter aesKey) {
@@ -191,9 +191,9 @@ public class WalletPocketHD extends AbstractWallet {
 
     /**
      * Decrypt the keys in the group using the previously given key crypter and the AES key. A good default
-     * KeyCrypter to use is {@link org.bitcoinj.crypto.KeyCrypterScrypt}.
+     * KeyCrypter to use is {@link com.microbitcoin.mbcj.crypto.KeyCrypterScrypt}.
      *
-     * @throws org.bitcoinj.crypto.KeyCrypterException Thrown if the wallet decryption fails for some reason, leaving the group unchanged.
+     * @throws com.microbitcoin.mbcj.crypto.KeyCrypterException Thrown if the wallet decryption fails for some reason, leaving the group unchanged.
      */
     @Override
     public void decrypt(KeyParameter aesKey) {
@@ -348,7 +348,7 @@ public class WalletPocketHD extends AbstractWallet {
      *
      * @param req a SendRequest that contains the incomplete transaction and details for how to make it valid.
      * @throws InsufficientMoneyException if the request could not be completed due to not enough balance.
-     * @throws IllegalArgumentException if you try and complete the same SendRequest twice
+     * @throws IllegalArgumentException   if you try and complete the same SendRequest twice
      */
     public void completeTx(SendRequest req) throws InsufficientMoneyException {
         lock.lock();
@@ -362,7 +362,7 @@ public class WalletPocketHD extends AbstractWallet {
     /**
      * <p>Given a send request containing transaction, attempts to sign it's inputs. This method expects transaction
      * to have all necessary inputs connected or they will be ignored.</p>
-     * <p>Actual signing is done by pluggable {@link org.bitcoinj.signers.LocalTransactionSigner}
+     * <p>Actual signing is done by pluggable {@link com.microbitcoin.mbcj.signers.LocalTransactionSigner}
      * and it's not guaranteed that transaction will be complete in the end.</p>
      */
     public void signTransaction(SendRequest req) {
@@ -394,6 +394,7 @@ public class WalletPocketHD extends AbstractWallet {
 
     /**
      * Locates a keypair from the basicKeyChain given the raw public key bytes.
+     *
      * @return ECKey or null if no such key was found.
      */
     @Nullable
@@ -413,19 +414,25 @@ public class WalletPocketHD extends AbstractWallet {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Address getChangeAddress() {
         return currentAddress(CHANGE);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Address getReceiveAddress() {
         return currentAddress(RECEIVE_FUNDS);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Address getRefundAddress() {
         return currentAddress(REFUND);
@@ -606,7 +613,8 @@ public class WalletPocketHD extends AbstractWallet {
     /**
      * Get the currently latest unused address by purpose.
      */
-    @VisibleForTesting Address currentAddress(SimpleHDKeyChain.KeyPurpose purpose) {
+    @VisibleForTesting
+    Address currentAddress(SimpleHDKeyChain.KeyPurpose purpose) {
         lock.lock();
         try {
             return keys.getCurrentUnusedKey(purpose).toAddress(coinType);
@@ -620,7 +628,8 @@ public class WalletPocketHD extends AbstractWallet {
      * Used to force keys creation, could take long time to complete so use it in a background
      * thread.
      */
-    @VisibleForTesting void maybeInitializeAllKeys() {
+    @VisibleForTesting
+    void maybeInitializeAllKeys() {
         lock.lock();
         try {
             keys.maybeLookAhead();
@@ -643,6 +652,6 @@ public class WalletPocketHD extends AbstractWallet {
 
     @Override
     public String toString() {
-        return WalletPocketHD.class.getSimpleName() + " " + id.substring(0, 4)+ " " + coinType;
+        return WalletPocketHD.class.getSimpleName() + " " + id.substring(0, 4) + " " + coinType;
     }
 }

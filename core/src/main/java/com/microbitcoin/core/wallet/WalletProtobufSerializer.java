@@ -1,17 +1,18 @@
 package com.microbitcoin.core.wallet;
 
 import com.microbitcoin.core.protos.Protos;
-import org.bitcoinj.crypto.ChildNumber;
-import org.bitcoinj.crypto.DeterministicKey;
-import org.bitcoinj.crypto.EncryptedData;
-import org.bitcoinj.crypto.KeyCrypter;
-import org.bitcoinj.crypto.KeyCrypterException;
-import org.bitcoinj.crypto.KeyCrypterScrypt;
-import org.bitcoinj.store.UnreadableWalletException;
-import org.bitcoinj.wallet.DeterministicSeed;
 import com.google.common.base.Splitter;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.TextFormat;
+
+import com.microbitcoin.mbcj.crypto.ChildNumber;
+import com.microbitcoin.mbcj.crypto.DeterministicKey;
+import com.microbitcoin.mbcj.crypto.EncryptedData;
+import com.microbitcoin.mbcj.crypto.KeyCrypter;
+import com.microbitcoin.mbcj.crypto.KeyCrypterException;
+import com.microbitcoin.mbcj.crypto.KeyCrypterScrypt;
+import com.microbitcoin.mbcj.wallet.DeterministicSeed;
+import com.microbitcoin.mbcj.wallet.UnreadableWalletException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ public class WalletProtobufSerializer {
 
     /**
      * Formats the given wallet (transactions and keys) to the given output stream in protocol buffer format.<p>
-     *
+     * <p>
      * Equivalent to <tt>walletToProto(wallet).writeTo(output);</tt>
      */
     public static void writeWallet(Wallet wallet, OutputStream output) throws IOException {
@@ -125,7 +126,7 @@ public class WalletProtobufSerializer {
      * <p>Parses a wallet from the given stream, using the provided Wallet instance to load data into. This is primarily
      * used when you want to register extensions. Data in the proto will be added into the wallet where applicable and
      * overwrite where not.</p>
-     *
+     * <p>
      * <p>A wallet can be unreadable for various reasons, such as inability to open the file, corrupt data, internally
      * inconsistent data, a wallet extension marked as mandatory that cannot be handled and so on. You should always
      * handle {@link UnreadableWalletException} and communicate failure to the user in an appropriate manner.</p>
@@ -145,7 +146,7 @@ public class WalletProtobufSerializer {
      * <p>Loads wallet data from the given protocol buffer and inserts it into the given Wallet object. This is primarily
      * useful when you wish to pre-register extension objects. Note that if loading fails the provided Wallet object
      * may be in an indeterminate state and should be thrown away.</p>
-     *
+     * <p>
      * <p>A wallet can be unreadable for various reasons, such as inability to open the file, corrupt data, internally
      * inconsistent data, a wallet extension marked as mandatory that cannot be handled and so on. You should always
      * handle {@link UnreadableWalletException} and communicate failure to the user in an appropriate manner.</p>
@@ -201,23 +202,20 @@ public class WalletProtobufSerializer {
                 checkState(walletProto.hasEncryptionParameters(), "Encryption parameters are missing");
 
                 Protos.ScryptParameters encryptionParameters = walletProto.getEncryptionParameters();
-                org.bitcoinj.wallet.Protos.ScryptParameters.Builder bitcoinjCrypter =
-                        org.bitcoinj.wallet.Protos.ScryptParameters.newBuilder();
+                com.microbitcoin.mbcj.wallet.Protos.ScryptParameters.Builder bitcoinjCrypter =
+                        com.microbitcoin.mbcj.wallet.Protos.ScryptParameters.newBuilder();
                 bitcoinjCrypter.setSalt(encryptionParameters.getSalt());
                 bitcoinjCrypter.setN(encryptionParameters.getN());
                 bitcoinjCrypter.setP(encryptionParameters.getP());
                 bitcoinjCrypter.setR(encryptionParameters.getR());
 
                 crypter = new KeyCrypterScrypt(bitcoinjCrypter.build());
-            }
-            else if (walletProto.getEncryptionType() == Protos.Wallet.EncryptionType.UNENCRYPTED) {
+            } else if (walletProto.getEncryptionType() == Protos.Wallet.EncryptionType.UNENCRYPTED) {
                 crypter = null;
-            }
-            else {
+            } else {
                 throw new KeyCrypterException("Unsupported encryption: " + walletProto.getEncryptionType().toString());
             }
-        }
-        else {
+        } else {
             crypter = null;
         }
 

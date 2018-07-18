@@ -1,9 +1,9 @@
 package com.microbitcoin.core.coins;
 
 import com.microbitcoin.core.util.Currencies;
-import com.microbitcoin.core.util.MonetaryFormat;
+import com.microbitcoin.mbcj.utils.MonetaryFormat;
 
-import org.bitcoinj.core.Coin;
+import com.microbitcoin.mbcj.core.Coin;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -26,8 +26,8 @@ public class FiatType implements ValueType {
 
     private final String name;
     private final String currencyCode;
-    private transient Value oneCoin;
-    private transient MonetaryFormat friendlyFormat;
+    private   Value oneCoin;
+    private   MonetaryFormat friendlyFormat;
 
     public FiatType(final String currencyCode, @Nullable final String name) {
         this.name = name != null ? name : "";

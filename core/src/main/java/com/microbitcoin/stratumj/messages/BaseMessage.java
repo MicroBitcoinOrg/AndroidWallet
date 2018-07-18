@@ -27,7 +27,6 @@ public class BaseMessage extends JSONObject {
     }
 
     public static BaseMessage fromJson(String json) throws JSONException {
-        Logger.getLogger("BaseMessage").info("BaseMessage : " + json);
         return new BaseMessage(json);
     }
 

@@ -51,7 +51,7 @@ import com.microbitcoin.wallet.util.ThrottlingWalletChangeListener;
 import com.microbitcoin.wallet.util.UiUtils;
 import com.microbitcoin.wallet.util.WeakHandler;
 
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

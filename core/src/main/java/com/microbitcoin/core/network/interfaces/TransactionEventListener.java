@@ -1,9 +1,9 @@
 package com.microbitcoin.core.network.interfaces;
 
+import com.microbitcoin.mbcj.core.Transaction;
 import com.microbitcoin.core.network.AddressStatus;
 import com.microbitcoin.core.network.BlockHeader;
 import com.microbitcoin.core.network.ServerClient;
-import org.bitcoinj.core.Transaction;
 
 import java.util.List;
 

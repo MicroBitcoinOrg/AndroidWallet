@@ -21,7 +21,7 @@ import com.microbitcoin.wallet.WalletApplication;
 import com.microbitcoin.wallet.tasks.SignVerifyMessageTask;
 import com.microbitcoin.wallet.util.Keyboard;
 
-import org.bitcoinj.core.Address;
+import com.microbitcoin.mbcj.core.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,9 +1,9 @@
 package com.microbitcoin.core.network;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Sha256Hash;
 
 import com.google.common.collect.Sets;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.Sha256Hash;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +15,8 @@ import javax.annotation.Nullable;
  */
 final public class AddressStatus {
     final Address address;
-    @Nullable final String status;
+    @Nullable
+    final String status;
 
     HashSet<ServerClient.HistoryTx> historyTransactions;
     HashSet<Sha256Hash> allTransactions = new HashSet<Sha256Hash>();
@@ -29,12 +30,14 @@ final public class AddressStatus {
         return address;
     }
 
-    @Nullable public String getStatus() {
+    @Nullable
+    public String getStatus() {
         return status;
     }
 
     /**
      * Queue transactions that are going to be fetched
+     *
      * @param txs
      */
     public void queueHistoryTransactions(List<ServerClient.HistoryTx> txs) {

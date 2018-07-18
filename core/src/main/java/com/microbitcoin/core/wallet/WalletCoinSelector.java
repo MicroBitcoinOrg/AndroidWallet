@@ -1,8 +1,8 @@
 package com.microbitcoin.core.wallet;
 
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.wallet.DefaultCoinSelector;
+import com.microbitcoin.mbcj.core.Transaction;
+import com.microbitcoin.mbcj.core.TransactionConfidence;
+import com.microbitcoin.mbcj.wallet.DefaultCoinSelector;
 
 /**
  * @author John L. Jegutanis

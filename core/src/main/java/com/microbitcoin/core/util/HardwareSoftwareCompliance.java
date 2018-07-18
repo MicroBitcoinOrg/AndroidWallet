@@ -1,6 +1,7 @@
 package com.microbitcoin.core.util;
 
-import org.bitcoinj.core.ECKey;
+import com.microbitcoin.mbcj.core.ECKey;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

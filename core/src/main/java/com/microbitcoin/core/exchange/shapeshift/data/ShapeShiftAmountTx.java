@@ -4,8 +4,8 @@ import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.exchange.shapeshift.ShapeShift;
 import com.microbitcoin.core.util.ExchangeRate;
+import com.microbitcoin.mbcj.core.Address;
 
-import org.bitcoinj.core.Address;
 import org.json.JSONObject;
 
 import java.util.Date;

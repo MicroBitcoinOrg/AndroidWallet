@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.coins.ValueType;
-import com.microbitcoin.core.util.MonetaryFormat;
+import com.microbitcoin.mbcj.core.Coin;
+import com.microbitcoin.mbcj.utils.MonetaryFormat;
 import com.microbitcoin.wallet.R;
 import com.microbitcoin.wallet.util.MonetarySpannable;
 
-import org.bitcoinj.core.Coin;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -31,14 +31,17 @@ public class AmountEditView extends RelativeLayout {
     private final TextView symbol;
     private final EditText textView;
     private Listener listener;
-    @Nullable private ValueType type;
+    @Nullable
+    private ValueType type;
     private MonetaryFormat inputFormat;
     private boolean amountSigned = false;
-    @Nullable private Value hint;
+    @Nullable
+    private Value hint;
     private MonetaryFormat hintFormat = new MonetaryFormat().noCode();
 
     public static interface Listener {
         void changed();
+
         void focusChanged(final boolean hasFocus);
     }
 
@@ -141,8 +144,10 @@ public class AmountEditView extends RelativeLayout {
             symbol.setVisibility(GONE);
         }
 
-        final Spannable hintSpannable = new MonetarySpannable(hintFormat, amountSigned,
-                hint != null ? hint : Coin.ZERO);
+        final Spannable hintSpannable = new MonetarySpannable(
+                hintFormat,
+                amountSigned,
+                (hint != null ? hint : Coin.ZERO));
         textView.setHint(hintSpannable);
     }
 

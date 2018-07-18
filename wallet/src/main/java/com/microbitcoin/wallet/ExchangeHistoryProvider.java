@@ -13,20 +13,21 @@ import com.microbitcoin.core.coins.CoinID;
 import com.microbitcoin.core.coins.CoinType;
 import com.microbitcoin.core.coins.Value;
 import com.microbitcoin.core.exchange.shapeshift.data.ShapeShiftTxStatus;
+import com.microbitcoin.mbcj.core.Address;
+import com.microbitcoin.mbcj.core.AddressFormatException;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static com.microbitcoin.core.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author John L. Jegutanis
  */
+@SuppressWarnings("all")
 public class ExchangeHistoryProvider extends ContentProvider {
     private static final String DATABASE_TABLE = "exchange_history";
 
@@ -292,8 +293,10 @@ public class ExchangeHistoryProvider extends ContentProvider {
             values.put(KEY_DEPOSIT_COIN_ID, depositAddress.getParameters().getId());
             values.put(KEY_DEPOSIT_AMOUNT_UNIT, depositAmount.value);
             values.put(KEY_DEPOSIT_TXID, depositTransactionId);
-            if (withdrawAddress != null) values.put(KEY_WITHDRAW_ADDRESS, withdrawAddress.toString());
-            if (withdrawAddress != null) values.put(KEY_WITHDRAW_COIN_ID, withdrawAddress.getParameters().getId());
+            if (withdrawAddress != null)
+                values.put(KEY_WITHDRAW_ADDRESS, withdrawAddress.toString());
+            if (withdrawAddress != null)
+                values.put(KEY_WITHDRAW_COIN_ID, withdrawAddress.getParameters().getId());
             if (withdrawAmount != null) values.put(KEY_WITHDRAW_AMOUNT_UNIT, withdrawAmount.value);
             if (withdrawTransactionId != null) values.put(KEY_WITHDRAW_TXID, withdrawTransactionId);
             return values;

@@ -1,6 +1,7 @@
 package com.microbitcoin.core.messages;
 
-import org.bitcoinj.core.Transaction;
+
+import com.microbitcoin.mbcj.core.Transaction;
 
 import javax.annotation.Nullable;
 
