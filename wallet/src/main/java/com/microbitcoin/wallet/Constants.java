@@ -84,12 +84,13 @@ public class Constants {
     // TODO move to resource files
     public static final List<CoinAddress> DEFAULT_COINS_SERVERS = ImmutableList.of(
             new CoinAddress(MicroBitCoinMain.get(),
-                    new ServerAddress("13.57.248.201", 8000)),
-            new CoinAddress(MicroBitCoinTest.get(),
-                    new ServerAddress("13.250.238.150", 7403)
+                    new ServerAddress("13.57.248.201", 8000))
+//            ,
+//            new CoinAddress(MicroBitCoinTest.get(),
+//                    new ServerAddress("13.250.238.150", 7403)
 //                    new ServerAddress("13.250.204.172", 18432),
 //                    new ServerAddress("13.250.238.150", 18432)
-            )
+//            )
 
 //
 //13.250.204.172:18433 (rpc 18432)
@@ -108,7 +109,7 @@ public class Constants {
     static {
         COINS_ICONS = new HashMap<>();
         COINS_ICONS.put(CoinID.NEWCOIN_MAIN.getCoinType(), R.drawable.newcoin);
-        COINS_ICONS.put(CoinID.NEWCOIN_TEST.getCoinType(), R.drawable.newcoin);
+//        COINS_ICONS.put(CoinID.NEWCOIN_TEST.getCoinType(), R.drawable.newcoin);
 //        COINS_ICONS.put(CoinID.BITCOIN_MAIN.getCoinType(), R.drawable.bitcoin);
 //        COINS_ICONS.put(CoinID.LITECOIN_MAIN.getCoinType(), R.drawable.litecoin);
 
@@ -117,18 +118,19 @@ public class Constants {
 //        COINS_BLOCK_EXPLORERS.put(CoinID.LITECOIN_MAIN.getCoinType(), "http://ltc.blockr.io/tx/info/%s");
         //COINS_BLOCK_EXPLORERS.put(CoinID.NEWCOIN_MAIN.getCoinType(), "https://127.0.0.1");
 
-        new Context(MicroBitCoinTest.get());
+        new Context(MicroBitCoinMain.get());
     }
 
-    public static final CoinType DEFAULT_COIN = MicroBitCoinTest.get();
-    public static final List<CoinType> DEFAULT_COINS = ImmutableList.of((CoinType) MicroBitCoinTest.get());
+    public static final CoinType DEFAULT_COIN = MicroBitCoinMain.get();
+    public static final List<CoinType> DEFAULT_COINS = ImmutableList.of((CoinType) MicroBitCoinMain.get());
     public static final ArrayList<String> DEFAULT_TEST_COIN_IDS = Lists.newArrayList(
 
     );
 
     public static final List<CoinType> SUPPORTED_COINS = ImmutableList.of(
-            MicroBitCoinMain.get(),
-            MicroBitCoinTest.get()
+            MicroBitCoinMain.get()
+//            ,
+//            MicroBitCoinTest.get()
 //            ,
 //            ,
 //            BitcoinMain.get(),
