@@ -84,7 +84,7 @@ public class Constants {
     // TODO move to resource files
     public static final List<CoinAddress> DEFAULT_COINS_SERVERS = ImmutableList.of(
             new CoinAddress(MicroBitCoinMain.get(),
-                    new ServerAddress("13.57.248.201", 8000))
+                    new ServerAddress("13.57.248.201", 7403))
 //            ,
 //            new CoinAddress(MicroBitCoinTest.get(),
 //                    new ServerAddress("13.250.238.150", 7403)
