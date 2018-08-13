@@ -168,10 +168,10 @@ final public class WalletActivity extends BaseWalletActivity implements
             openPocket(lastAccount, false);
         }
 
-//        ((DrawerLayout) findViewById(R.id.drawer_layout))
-//                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//        getSupportActionBar().setHomeButtonEnabled(false);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((DrawerLayout) findViewById(R.id.drawer_layout))
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     private void navDrawerSelectAccount(@Nullable WalletAccount account, boolean closeDrawer) {

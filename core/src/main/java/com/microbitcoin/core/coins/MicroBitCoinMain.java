@@ -20,7 +20,8 @@ public class MicroBitCoinMain extends CoinType {
         uriScheme = "MicroBitcoin";
         bip44Index = 0;
         unitExponent = 4;
-        feePerKb = value(1000); // 0.0001 AUM
+//        feePerKb = value(1000); // 0.0001 AUM
+        feePerKb = value(10); // 0.0001 AUM
         minNonDust = value(1);
         softDustLimit = value(10000); // 0.01 AUM
         softDustPolicy = SoftDustPolicy.AT_LEAST_BASE_FEE_IF_SOFT_DUST_TXO_PRESENT;
